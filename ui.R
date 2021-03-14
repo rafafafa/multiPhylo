@@ -21,7 +21,7 @@ ui = dashboardPage(
             menuItem(tabName = "tree_comp", "DISTANCE BASED TREES", icon=icon("robot"))
         ),
         sidebarMenu(
-            menuItem(tabName = "mod_test", "MODEL TEST", icon=icon("ethernet"))
+            menuItem(tabName = "mod_test", "MODEL TEST", icon=icon("vials"))
         ),
         sidebarMenu(
             menuItem(tabName = "map_tree", "TREE MAP", icon=icon("globe-americas"))
@@ -91,7 +91,7 @@ ui = dashboardPage(
                         collapsed = F,
                         actionButton("run_mod_test","RUN"),
                         div(style="height = 600px;",
-                            tableOutput("model_testing")
+                            tableOutput("model_testing") %>% withSpinner(color="#0dc5c1")
                         )
                     )
                 )

@@ -37,12 +37,13 @@ server = function(input, output, session){
         arboles(df())
     })
     # MODEL TESTING
-    output$model_testing = renderTable({
-#        withCallingHandlers(
-#            message = function(m) output$text <- renderPrint(m$message)
-            mt = modelTest(df())
-#        )
+    mt = eventReactive(input$run_mod_test, {
+        mt = modelTest(df())
         mt = mt[order(mt$AIC, decreasing=F),]
+
+    })
+    output$model_testing = renderTable({
+        mt()
     })
     # TREE OVER A MAP
     output$tree_map = renderPlot({

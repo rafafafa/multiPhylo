@@ -1,5 +1,7 @@
 # App libraries
 library(shinydashboard)
+library(shinycssloaders)
+library(magrittr)
 # Phylogenetic analysis libraries
 #library(TreeTools)
 #library(TreeSearch)
