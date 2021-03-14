@@ -22,6 +22,7 @@ server = function(input, output, session){
     })
     # TREE COMPARISSON
     arb1 = reactive({upgma(dist.ml(df()))})
+    arb2 = reactive({nj(dist.ml(df()))})
     
     output$tree_comp = renderPlot({
         arboles = function(x){
@@ -31,11 +32,30 @@ server = function(input, output, session){
 #            assoc = as.matrix(data.frame(df0_fasta[,1],df0_fasta[,1]))
             arb12 = cophylo(arb1,arb2,rotate.multi=T)
             n = length(arb1$tip.label)
-            plot(arb12,link.lwd=4,link.lty="solid",link.col=rainbow(n),main="UPGMA vs NJ")
+            paleta = 2
+            plot(arb12,link.lwd=4,link.lty="solid",link.col=rep(brewer.pal(n,paste0("Set",paleta)),ceiling(n/length(brewer.pal(n,paste0("Set",paleta))))),main="UPGMA vs NJ")
+#            title("UPGMA vs NJ",outer=T)
         }
-        par(mar=c(0,0,0,0))
+        par(mar=c(0,0,0,1))
         arboles(df())
     })
+    output$parsimony_upgma = renderUI({
+        infoBox(
+            "PARSIMONY SCORE UPGMA",
+            #c(parsimony(upgma(df())),
+            parsimony(arb1(),data=df()),
+            fill=T,
+            width=6)
+    })
+
+    output$parsimony_nj = renderUI({
+        infoBox(
+            "PARSIMONY SCORE NJ",
+            parsimony(arb2(),data=df()),
+            fill=T,
+            width=6)
+    })
+
     # MODEL TESTING
     mt = eventReactive(input$run_mod_test, {
         mt = modelTest(df())

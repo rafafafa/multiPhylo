@@ -2,6 +2,7 @@
 library(shinydashboard)
 library(shinycssloaders)
 library(magrittr)
+library(RColorBrewer)
 # Phylogenetic analysis libraries
 #library(TreeTools)
 #library(TreeSearch)

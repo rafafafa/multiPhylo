@@ -78,7 +78,9 @@ ui = dashboardPage(
                         div(style="height = 600px;",
                             plotOutput("tree_comp")
                         )
-                    )
+                    ),
+                    uiOutput("parsimony_upgma"),
+                    uiOutput("parsimony_nj")
                 )
             ),
             # MODEL TEST
@@ -90,7 +92,7 @@ ui = dashboardPage(
                         collapsible = T,
                         collapsed = F,
                         actionButton("run_mod_test","RUN"),
-                        div(style="height = 600px;",
+                        div(style="height = 650px;",
                             tableOutput("model_testing") %>% withSpinner(color="#0dc5c1")
                         )
                     )
