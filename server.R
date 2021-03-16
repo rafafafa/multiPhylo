@@ -12,7 +12,7 @@ server = function(input, output, session){
 #            if(grepl(input$file1$datapath, pattern="\\.nex$")){
 #                df = ape::read.nexus.data(input$file1$datapath)
 #            }
-            formatos = c("interleaved","phylip","nexus","fasta","sequential","clustal","")
+            formatos = c("phylip","nexus","fasta","interleaved","sequential","clustal","")
             numero = 0
             while(is.null(df)){
                 numero = numero + 1
