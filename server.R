@@ -47,14 +47,14 @@ server = function(input, output, session){
     ####################
     arb1 = reactive({
         if(verifying.phylo(df())){
-            upgma(dist.ml(df()))
+            ladderize(upgma(dist.ml(df())))
         }else{
             NULL
         }
     })
     arb2 = reactive({
         if(verifying.phylo(df())){
-            nj(dist.ml(df()))
+            ladderize(nj(dist.ml(df())))
         }else{
             NULL
         }
