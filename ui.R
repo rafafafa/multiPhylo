@@ -25,6 +25,9 @@ ui = dashboardPage(
         ),
         sidebarMenu(
             menuItem(tabName = "map_tree", "TREE MAP", icon=icon("globe-americas"))
+        ),
+        sidebarMenu(
+            menuItem(tabName = "prob_dist", "PROBABILITY DISTRIBUTIONS", icon=icon("chess-board"))
         )
 
     ),
@@ -115,8 +118,25 @@ ui = dashboardPage(
                         )
                     )
                 )
+            ),
+            # PROBABILITY DISTRIBUTIONS #
+            tabItem(tabName = "prob_dist",
+                fluidRow(
+                    box(
+                        selectInput("dist1", "DISTRIBUTIONS", choices=distrib, selected="Normal"),
+                        selectInput("dist2", "DISTRIBUTIONS", choices=distrib, selected="Normal")
+                    ),
+                    box(title = "DIFFERENT PROBABILITY DISTRIBUTIONS",
+                        solidHeader = T, 
+                        width = 12,
+                        collapsible = T,
+                        collapsed = F,
+                        div(style="height = 600px;",
+                            plotOutput("dist_prob")
+                        )
+                    )
+                )
             )
-
         )
     )
 )

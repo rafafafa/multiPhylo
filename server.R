@@ -3,18 +3,22 @@ server = function(input, output, session){
     # SHOWING DATA #
     ################
 #    output$path = renderText({
-#        print(input$file1$datapath)
+#        cat(system(paste0("cat ", input$file1$datapath)))
 #    })
 
     df = reactive({
         if(is.character(input$file1$datapath)){
             df = NULL
+#            if(grepl(input$file1$datapath, pattern="\\.nex$")){
+#                df = ape::read.nexus.data(input$file1$datapath)
+#            }
             formatos = c("interleaved","phylip","nexus","fasta","sequential","clustal","")
             numero = 0
             while(is.null(df)){
                 numero = numero + 1
                 df = tryCatch(read.phyDat(input$file1$datapath, format=formatos[numero]), 
-                          error = function(e)NULL)
+                          error = function(cond)message(cond),
+                          warning = function(cond)message(cond))
                 if(numero==6) break
             }
         }else{
@@ -134,6 +138,21 @@ server = function(input, output, session){
     output$tree_map = renderPlot({
         if(verifying.phylo(df())){
             phylo.to.map(arb1())
+        }else{
+            NULL
+        }
+    })
+    # PROBABILITY DISTRIBUTIONS
+    output$dist_prob = renderPlot({
+#        print(input$dist1)
+        if(input$dist1=="Normal"){
+            hist(rnorm(100), col = "red", border="white", main=input$dist1)
+        }
+        if(input$dist1=="Beta"){
+            hist(rbeta(100,1,2), col = "blue", border="white", main=input$dist1)
+        }
+        if(input$dist1=="Uniform"){
+            hist(runif(100), col = "orange", border="white", main=input$dist1)
         }else{
             NULL
         }
