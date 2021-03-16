@@ -37,6 +37,7 @@ ui = dashboardPage(
             # LOADING DATA
             tabItem(tabName = "load_data",
                 fluidRow(
+                    verbatimTextOutput("path"),
                     box(
                         fileInput("file1", "UPLOAD FILE (fasta, nexus, phylip)",
                                 multiple = F,
