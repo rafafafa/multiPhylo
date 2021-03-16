@@ -9,9 +9,9 @@ server = function(input, output, session){
     df = reactive({
         if(is.character(input$file1$datapath)){
             df = NULL
-#            if(grepl(input$file1$datapath, pattern="\\.nex$")){
-#                df = ape::read.nexus.data(input$file1$datapath)
-#            }
+           if(grepl(input$file1$datapath, pattern="\\.nex$")){
+                df = ape::read.nexus.data(input$file1$datapath)
+            }
             formatos = c("phylip","nexus","fasta","interleaved","sequential","clustal","")
             numero = 0
             while(is.null(df)){
