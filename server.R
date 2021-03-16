@@ -15,6 +15,7 @@ server = function(input, output, session){
                 numero = numero + 1
                 df = tryCatch(read.phyDat(input$file1$datapath, format=formatos[numero]), 
                           error = function(e)NULL)
+                if(numero==6) break
             }
         }else{
             df = NULL
