@@ -2,9 +2,9 @@ server = function(input, output, session){
     ################
     # SHOWING DATA #
     ################
-    output$path = renderText({
-        print(input$file1$datapath)
-    })
+#    output$path = renderText({
+#        print(input$file1$datapath)
+#    })
 
     df = reactive({
         if(is.character(input$file1$datapath)){
