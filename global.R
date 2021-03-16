@@ -18,4 +18,5 @@ library(rworldmap)
 #library(mapdata)
 
 source("functions/phylo.to.map.R")
+source("functions/verifying.phylo.R")
 #source("https://raw.githubusercontent.com/liamrevell/phytools/master/R/phylo.to.map.R")

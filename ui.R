@@ -1,5 +1,5 @@
 ui = dashboardPage(
-    skin = "red",
+    skin = "purple",
     title = "multiPhylo",
     ##########
     # Header #
@@ -37,10 +37,12 @@ ui = dashboardPage(
             # LOADING DATA
             tabItem(tabName = "load_data",
                 fluidRow(
-                    fileInput("file1", "Choose FASTA/PHYLO file",
-                            multiple = F,
-                            accept = c(".fas", ".phy")
-                            ),
+                    box(
+                        fileInput("file1", "UPLOAD FILE (fasta, nexus, phylip)",
+                                multiple = F,
+                                accept = c(".fas", ".phy", ".nex", ".ph", ".fasta", ".dna")
+                                )
+                    ),
                     br(),
                     box(title = "SEQUENCES", 
                         solidHeader = T, 
@@ -80,6 +82,7 @@ ui = dashboardPage(
                         )
                     ),
                     uiOutput("parsimony_upgma"),
+                    uiOutput("tree_dist"),
                     uiOutput("parsimony_nj")
                 )
             ),
