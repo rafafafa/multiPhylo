@@ -10,15 +10,16 @@ server = function(input, output, session){
         if(is.character(input$file1$datapath)){
             df = NULL
            if(grepl(input$file1$datapath, pattern="\\.nex$")){
-                df = ape::read.nexus.data(input$file1$datapath)
+#                df = ape::read.nexus(input$file1$datapath)
+                df = read.phyDat(input$file1$datapath, format="nexus")
             }
-            formatos = c("phylip","nexus","fasta","interleaved","sequential","clustal","")
+            formatos = c("interleaved","phylip","nexus","fasta","sequential","clustal","")
             numero = 0
             while(is.null(df)){
                 numero = numero + 1
                 df = tryCatch(read.phyDat(input$file1$datapath, format=formatos[numero]), 
-                          error = function(cond)message(cond),
-                          warning = function(cond)message(cond))
+                          error = function(cond)NULL,#message(cond),
+                          warning = function(cond)NULL)#message(cond))
                 if(numero==6) break
             }
         }else{
