@@ -17,7 +17,7 @@ server = function(input, output, session){
             numero = 0
             while(is.null(df)){
                 numero = numero + 1
-                df = tryCatch(read.phyDat(input$file1$datapath, format=formatos[numero]), 
+                df = tryCatch(read.phyDat(input$file1$datapath, format=formatos[numero]),
                           error = function(cond)NULL,#message(cond),
                           warning = function(cond)NULL)#message(cond))
                 if(numero==6) break
@@ -25,6 +25,7 @@ server = function(input, output, session){
         }else{
             df = NULL
         }
+        
         return(df)
     })
     # Plotting table
@@ -36,7 +37,7 @@ server = function(input, output, session){
     ##################
     output$examination = renderPlot({
         print(class(df()))
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             par(mar=c(0,8,1,0))
             image(df())
         }else{
@@ -47,26 +48,26 @@ server = function(input, output, session){
     # TREE COMPARISSON #
     ####################
     arb1 = reactive({
-        if(verifying.phylo(df())){
-            ladderize(upgma(dist.ml(df())))
+        if(verifyingPhylo(df())){
+            calculatingTree(df(),input$tree1)
         }else{
             NULL
         }
     })
     arb2 = reactive({
-        if(verifying.phylo(df())){
-            ladderize(nj(dist.ml(df())))
+        if(verifyingPhylo(df())){
+            calculatingTree(df(),input$tree2)
         }else{
             NULL
         }
     })
     # Comparisson between trees
     output$tree_comp = renderPlot({
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             arboles = function(x){
                 x = dist.ml(x)
-                arb1 = upgma(x)
-                arb2 = nj(x)
+                arb1 = arb1()
+                arb2 = arb2()
                 arb12 = cophylo(arb1,arb2,rotate.multi=T)
                 n = length(arb1$tip.label)
                 paleta = 2
@@ -80,9 +81,9 @@ server = function(input, output, session){
     })
     # Calculating parsimony and distances
     output$parsimony_upgma = renderUI({
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             infoBox(
-                "PARSIMONY SCORE UPGMA",
+                paste0("PARSIMONY SCORE ", input$tree1),
                 parsimony(arb1(),data=df()),
                 fill=T,
                 width=4,
@@ -94,7 +95,7 @@ server = function(input, output, session){
     })
     
     output$tree_dist = renderUI({
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             infoBox(
                 "DISTANCE BETWEEN TREES",
                 paste0(round(as.numeric(treedist(arb1(),arb2())),digits=2),collapse="---"),
@@ -107,9 +108,9 @@ server = function(input, output, session){
         }
     })
     output$parsimony_nj = renderUI({
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             infoBox(
-                "PARSIMONY SCORE NJ",
+                paste0("PARSIMONY SCORE ", input$tree2),
                 parsimony(arb2(),data=df()),
                 fill=T,
                 width=4,
@@ -121,7 +122,7 @@ server = function(input, output, session){
     })
     # MODEL TESTING
     mt = eventReactive(input$run_mod_test, {
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             mt = modelTest(df())
             mt = mt[order(mt$AIC, decreasing=F),]
         }else{
@@ -129,7 +130,7 @@ server = function(input, output, session){
         }
     })
     output$model_testing = renderTable({
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             mt()
         }else{
             NULL
@@ -137,7 +138,7 @@ server = function(input, output, session){
     })
     # TREE OVER A MAP
     output$tree_map = renderPlot({
-        if(verifying.phylo(df())){
+        if(verifyingPhylo(df())){
             phylo.to.map(arb1())
         }else{
             NULL
