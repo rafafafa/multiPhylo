@@ -27,7 +27,7 @@ source("functions/class_tree_manipulating.R")
 prior = c("Bernoulli","Binomial","Negative Binomial","Poisson",
           "Categorical","Multinomial","Normal","Multivariate Normal","Uniform")
 conj_prior = c("Beta","Beta","Beta","Gamma",
-                    "Dirichlet","Dirichlet","Normal","Multivariate Normal", "Pareto")
+               "Dirichlet","Dirichlet","Normal","Multivariate Normal", "Pareto")
 catPriorConj = data.frame(prior, conj_prior)
 clustering = c("WARD",#ward.d
                "WARD2",#ward.d2

@@ -78,10 +78,10 @@ ui = dashboardPage(
                 fluidRow(
                     box(width = 12,
                         column(width = 6,
-                            selectInput("tree1", "DISTANCE FOR CLUSTERING", choices=clustering, selected="UPGMA-ape")
+                            selectInput("tree1", "CLUSTERING CRITERIA", choices=clustering, selected="UPGMA-ape")
                         ),
                         column(width = 6,
-                            selectInput("tree2", "DISTANCE FOR CLUSTERING", choices=clustering, selected="NEIGHBOR JOINING")
+                            selectInput("tree2", "CLUSTERING CRITERIA", choices=clustering, selected="NEIGHBOR JOINING")
                         )
                     ),
                     box(#title = "UPGMA VS NJ",
