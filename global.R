@@ -4,7 +4,6 @@ library(shinycssloaders)
 library(magrittr)
 library(RColorBrewer)
 # Phylogenetic analysis libraries
-#library(TreeTools)
 #library(TreeSearch)
 library(phytools)
 library(phangorn)
@@ -22,9 +21,14 @@ source("functions/phylo.to.map.R")
 #source("functions/verifying.phylo.R")
 source("functions/class_tree_manipulating.R")
 #source("https://raw.githubusercontent.com/liamrevell/phytools/master/R/phylo.to.map.R")
-distrib = c("Normal",
-            "Uniform",
-            "Beta")
+#distrib = c("Normal",
+#            "Uniform",
+#            "Beta")
+prior = c("Bernoulli","Binomial","Negative Binomial","Poisson",
+          "Categorical","Multinomial","Normal","Multivariate Normal","Uniform")
+conj_prior = c("Beta","Beta","Beta","Gamma",
+                    "Dirichlet","Dirichlet","Normal","Multivariate Normal", "Pareto")
+catPriorConj = data.frame(prior, conj_prior)
 clustering = c("WARD",#ward.d
                "WARD2",#ward.d2
                "SINGLE",#single
@@ -35,3 +39,4 @@ clustering = c("WARD",#ward.d
                "WPGMC",#median
                "UPGMC",#centroide
                "NEIGHBOR JOINING")#UPGMC
+

@@ -145,6 +145,12 @@ server = function(input, output, session){
         }
     })
     # PROBABILITY DISTRIBUTIONS
+    output$conjugate_prior = renderUI({
+        default = catPriorConj$conj_prior[which(input$dist1==catPriorConj$prior)]
+        selectInput("dist2", "PROPER CONJUGATE PRIOR",
+                    choices = catPriorConj$conj_prior, selected=default)
+    })
+    
     output$dist_prob = renderPlot({
 #        print(input$dist1)
         if(input$dist1=="Normal"){

@@ -130,9 +130,14 @@ ui = dashboardPage(
             # PROBABILITY DISTRIBUTIONS #
             tabItem(tabName = "prob_dist",
                 fluidRow(
-                    box(
-                        selectInput("dist1", "DISTRIBUTIONS", choices=distrib, selected="Normal"),
-                        selectInput("dist2", "DISTRIBUTIONS", choices=distrib, selected="Normal")
+                    box(width= 12,
+                        column(6,
+                            selectInput("dist1", "CHOOSE PRIOR DISTRIBUTIONS", choices=catPriorConj$prior, selected="Normal")
+                        ),
+                        column(6,
+#                        selectInput("dist2", "PROPER CONJUGATE CHOICE", choices=distrib, selected="Normal")
+                            uiOutput("conjugate_prior")
+                        )
                     ),
                     box(title = "DIFFERENT PROBABILITY DISTRIBUTIONS",
                         solidHeader = T, 
