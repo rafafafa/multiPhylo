@@ -5,28 +5,8 @@ server = function(input, output, session){
 #    output$path = renderText({
 #        cat(system(paste0("cat ", input$file1$datapath)))
 #    })
-
     df = reactive({
-        if(is.character(input$file1$datapath)){
-            df = NULL
-           if(grepl(input$file1$datapath, pattern="\\.nex$")){
-#                df = ape::read.nexus(input$file1$datapath)
-                df = read.phyDat(input$file1$datapath, format="nexus")
-            }
-            formatos = c("interleaved","phylip","nexus","fasta","sequential","clustal","")
-            numero = 0
-            while(is.null(df)){
-                numero = numero + 1
-                df = tryCatch(read.phyDat(input$file1$datapath, format=formatos[numero]),
-                          error = function(cond)NULL,#message(cond),
-                          warning = function(cond)NULL)#message(cond))
-                if(numero==6) break
-            }
-        }else{
-            df = NULL
-        }
-        
-        return(df)
+        dataLoader(input$file1$datapath)
     })
     # Plotting table
     output$contents = renderTable({
@@ -36,7 +16,7 @@ server = function(input, output, session){
     # EXAMINING DATA #
     ##################
     output$examination = renderPlot({
-        print(class(df()))
+        print((df()))
         if(verifyingPhylo(df())){
             par(mar=c(0,8,1,0))
             image(df())
@@ -49,14 +29,14 @@ server = function(input, output, session){
     ####################
     arb1 = reactive({
         if(verifyingPhylo(df())){
-            calculatingTree(df(),input$tree1)
+            calculatingTree(df(),input$tree1, input$distance)
         }else{
             NULL
         }
     })
     arb2 = reactive({
         if(verifyingPhylo(df())){
-            calculatingTree(df(),input$tree2)
+            calculatingTree(df(),input$tree2, input$distance)
         }else{
             NULL
         }
@@ -64,23 +44,14 @@ server = function(input, output, session){
     # Comparisson between trees
     output$tree_comp = renderPlot({
         if(verifyingPhylo(df())){
-            arboles = function(x){
-                x = dist.ml(x)
-                arb1 = arb1()
-                arb2 = arb2()
-                arb12 = cophylo(arb1,arb2,rotate.multi=T)
-                n = length(arb1$tip.label)
-                paleta = 2
-                plot(arb12,link.lwd=4,link.lty="solid",link.col=rep(brewer.pal(n,paste0("Set",paleta)),ceiling(n/length(brewer.pal(n,paste0("Set",paleta))))),main="UPGMA vs NJ")
-            }
             par(mar=c(0,0,0,1))
-            arboles(df())
+            coplottingTrees(arb1(), arb2())
         }else{
             NULL
         }
     })
     # Calculating parsimony and distances
-    output$parsimony_upgma = renderUI({
+    output$parsimony1 = renderUI({
         if(verifyingPhylo(df())){
             infoBox(
                 paste0("PARSIMONY SCORE ", input$tree1),
@@ -107,7 +78,7 @@ server = function(input, output, session){
             NULL
         }
     })
-    output$parsimony_nj = renderUI({
+    output$parsimony2 = renderUI({
         if(verifyingPhylo(df())){
             infoBox(
                 paste0("PARSIMONY SCORE ", input$tree2),
@@ -151,18 +122,12 @@ server = function(input, output, session){
                     choices = catPriorConj$conj_prior, selected=default)
     })
     
-    output$dist_prob = renderPlot({
-#        print(input$dist1)
-        if(input$dist1=="Normal"){
-            hist(rnorm(100), col = "red", border="white", main=input$dist1)
-        }
-        if(input$dist1=="Beta"){
-            hist(rbeta(100,1,2), col = "blue", border="white", main=input$dist1)
-        }
-        if(input$dist1=="Uniform"){
-            hist(runif(100), col = "orange", border="white", main=input$dist1)
-        }else{
-            NULL
-        }
+    output$dist1_prob = renderPlot({
+        distributionPlotter(input$dist1)
     })
+    
+    output$dist2_prob = renderPlot({
+        distributionPlotter(input$dist2)
+    })
+
 }

@@ -21,6 +21,9 @@ ui = dashboardPage(
             menuItem(tabName = "tree_comp", "DISTANCE BASED TREES", icon=icon("robot"))
         ),
         sidebarMenu(
+            menuItem(tabName = "parsimony_optim", "OPTIMIZING BY PARSIMONY", icon=icon("god"))
+        ),        
+        sidebarMenu(
             menuItem(tabName = "mod_test", "MODEL TEST", icon=icon("vials"))
         ),
         sidebarMenu(
@@ -45,7 +48,7 @@ ui = dashboardPage(
                         fileInput("file1", "UPLOAD FILE (fasta, nexus, phylip)",
                                 multiple = F,
                                 accept = c(".fas", ".phy", ".nex", ".ph", ".fasta", ".dna")
-                                )
+                        )
                     ),
                     br(),
                     box(title = "SEQUENCES", 
@@ -77,10 +80,13 @@ ui = dashboardPage(
             tabItem(tabName = "tree_comp",
                 fluidRow(
                     box(width = 12,
-                        column(width = 6,
+                        column(width = 4,
                             selectInput("tree1", "CLUSTERING CRITERIA", choices=clustering, selected="UPGMA-ape")
                         ),
-                        column(width = 6,
+                        column(width = 4,
+                            selectInput("distance", "CHOOSE DISTANCE MEASURE", choices=distancias, selected="euclidean")
+                        ),
+                        column(width = 4,
                             selectInput("tree2", "CLUSTERING CRITERIA", choices=clustering, selected="NEIGHBOR JOINING")
                         )
                     ),
@@ -93,10 +99,14 @@ ui = dashboardPage(
                             plotOutput("tree_comp")
                         )
                     ),
-                    uiOutput("parsimony_upgma"),
+                    uiOutput("parsimony1"),
                     uiOutput("tree_dist"),
-                    uiOutput("parsimony_nj")
+                    uiOutput("parsimony2")
                 )
+            ),
+            # OPTIMIZE TREE
+            tabItem(tabName = "parsimony_optim"#,
+                
             ),
             # MODEL TEST
             tabItem(tabName = "mod_test",
@@ -135,7 +145,6 @@ ui = dashboardPage(
                             selectInput("dist1", "CHOOSE PRIOR DISTRIBUTIONS", choices=catPriorConj$prior, selected="Normal")
                         ),
                         column(6,
-#                        selectInput("dist2", "PROPER CONJUGATE CHOICE", choices=distrib, selected="Normal")
                             uiOutput("conjugate_prior")
                         )
                     ),
@@ -145,7 +154,12 @@ ui = dashboardPage(
                         collapsible = T,
                         collapsed = F,
                         div(style="height = 600px;",
-                            plotOutput("dist_prob")
+                            column(width = 6,
+                                plotOutput("dist1_prob")
+                            ),
+                            column(width = 6,
+                                plotOutput("dist2_prob")
+                            )
                         )
                     )
                 )

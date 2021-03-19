@@ -39,4 +39,6 @@ clustering = c("WARD",#ward.d
                "WPGMC",#median
                "UPGMC",#centroide
                "NEIGHBOR JOINING")#UPGMC
-
+distancias = toupper(c("euclidean", "maximum",
+               "manhattan", "canberra",
+               "binary", "minkowski"))
