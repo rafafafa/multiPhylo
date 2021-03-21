@@ -91,7 +91,24 @@ server = function(input, output, session){
             NULL
         }
     })
-    # MODEL TESTING
+    ###########################
+    # OPTIMIZING BY PARSIMONY #
+    ###########################
+    arb_opt = reactive({
+        optim.parsimony(arb1(), df())
+    })
+    
+    output$optim_tree = renderPlot({
+        if(verifyingPhylo(df())){
+            par(mar=c(0,0,0,1))
+            coplottingTrees(arb1(), arb_opt())
+        }else{
+            NULL
+        }
+    })
+    #################
+    # MODEL TESTING #
+    #################
     mt = eventReactive(input$run_mod_test, {
         if(verifyingPhylo(df())){
             mt = modelTest(df())
@@ -107,7 +124,9 @@ server = function(input, output, session){
             NULL
         }
     })
-    # TREE OVER A MAP
+    ###################
+    # TREE OVER A MAP #
+    ###################
     output$tree_map = renderPlot({
         if(verifyingPhylo(df())){
             phylo.to.map(arb1())
@@ -115,7 +134,9 @@ server = function(input, output, session){
             NULL
         }
     })
-    # PROBABILITY DISTRIBUTIONS
+    #############################
+    # PROBABILITY DISTRIBUTIONS #
+    #############################
     output$conjugate_prior = renderUI({
         default = catPriorConj$conj_prior[which(input$dist1==catPriorConj$prior)]
         selectInput("dist2", "PROPER CONJUGATE PRIOR",

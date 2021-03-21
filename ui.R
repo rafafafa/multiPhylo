@@ -21,7 +21,7 @@ ui = dashboardPage(
             menuItem(tabName = "tree_comp", "DISTANCE BASED TREES", icon=icon("robot"))
         ),
         sidebarMenu(
-            menuItem(tabName = "parsimony_optim", "OPTIMIZING BY PARSIMONY", icon=icon("god"))
+            menuItem(tabName = "parsimony_optim", "OPTIMIZING BY PARSIMONY", icon=icon("tree"))
         ),        
         sidebarMenu(
             menuItem(tabName = "mod_test", "MODEL TEST", icon=icon("vials"))
@@ -57,7 +57,8 @@ ui = dashboardPage(
                         collapsible = T,
                         collapsed = F,
                         div(style="overflow-x: scroll;overflow-y: scroll; height: 350px;",
-                            tableOutput("contents")
+                            tableOutput("contents") %>%
+                            withSpinner(color="#0dc5c1")
                         )
                     )
                 )
@@ -81,17 +82,19 @@ ui = dashboardPage(
                 fluidRow(
                     box(width = 12,
                         column(width = 4,
-                            selectInput("tree1", "CLUSTERING CRITERIA", choices=clustering, selected="UPGMA-ape")
+                            selectInput("tree1", "CLUSTERING CRITERIA",
+                            choices=clustering, selected="UPGMA-ape")
                         ),
                         column(width = 4,
-                            selectInput("distance", "CHOOSE DISTANCE MEASURE", choices=distancias, selected="euclidean")
+                            selectInput("distance", "CHOOSE DISTANCE MEASURE",
+                            choices=distancias, selected="euclidean")
                         ),
                         column(width = 4,
-                            selectInput("tree2", "CLUSTERING CRITERIA", choices=clustering, selected="NEIGHBOR JOINING")
+                            selectInput("tree2", "CLUSTERING CRITERIA",
+                            choices=clustering, selected="NEIGHBOR JOINING")
                         )
                     ),
-                    box(#title = "UPGMA VS NJ",
-                        solidHeader = T, 
+                    box(solidHeader = T, 
                         width = 12,
                         collapsible = T,
                         collapsed = F,
@@ -105,8 +108,27 @@ ui = dashboardPage(
                 )
             ),
             # OPTIMIZE TREE
-            tabItem(tabName = "parsimony_optim"#,
-                
+            tabItem(tabName = "parsimony_optim",
+                fluidRow(
+                   box(solidHeader = T, 
+                        width = 12,
+                        collapsible = T,
+                        collapsed = F,
+                        div(style="height = 600px;",
+                            plotOutput("optim_tree")
+                        )
+                    ),
+                    box(width = 6,
+                        title = "CHOOSE YOUR TREE",
+                        collapsible = T,
+                        collapsed = F
+                    ),
+                    box(width = 6,
+                        title = "OPTIMIZED TREE",
+                        collapsible = T,
+                        collapsed = F
+                    )
+                )
             ),
             # MODEL TEST
             tabItem(tabName = "mod_test",
@@ -118,7 +140,8 @@ ui = dashboardPage(
                         collapsed = F,
                         actionButton("run_mod_test","RUN"),
                         div(style="height = 650px;",
-                            tableOutput("model_testing") %>% withSpinner(color="#0dc5c1")
+                            tableOutput("model_testing") %>%
+                            withSpinner(color="#0dc5c1")
                         )
                     )
                 )
@@ -142,7 +165,9 @@ ui = dashboardPage(
                 fluidRow(
                     box(width= 12,
                         column(6,
-                            selectInput("dist1", "CHOOSE PRIOR DISTRIBUTIONS", choices=catPriorConj$prior, selected="Normal")
+                            selectInput("dist1", "CHOOSE PRIOR DISTRIBUTIONS", 
+                                         choices=catPriorConj$prior,
+                                         selected="Normal")
                         ),
                         column(6,
                             uiOutput("conjugate_prior")
