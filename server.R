@@ -95,7 +95,16 @@ server = function(input, output, session){
     # OPTIMIZING BY PARSIMONY #
     ###########################
     arb_opt = reactive({
-        optim.parsimony(arb1(), df())
+        if(verifyingPhylo(df())){
+            if(parsimony(arb1())<parsimony(arb2())){
+                optim.parsimony(arb1(), df())
+            }else{
+                optim.parsimony(arb2(), df())        
+            }
+        }else{
+            NULL
+        }
+
     })
     
     output$optim_tree = renderPlot({
