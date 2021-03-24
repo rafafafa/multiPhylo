@@ -115,7 +115,6 @@ ui = dashboardPage(
                         choices = optimization, selected = optimization[1])
                     ),
                     box(solidHeader = T, 
-                        title = "NEAREST NEIGHBOR INTERCHANGE VS PRATCHET",
                         width = 12,
                         collapsible = T,
                         collapsed = F,
