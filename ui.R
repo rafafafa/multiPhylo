@@ -21,7 +21,7 @@ ui = dashboardPage(
             menuItem(tabName = "tree_comp", "DISTANCE BASED TREES", icon=icon("robot"))
         ),
         sidebarMenu(
-            menuItem(tabName = "parsimony_optim", "OPTIMIZING BY PARSIMONY", icon=icon("tree"))
+            menuItem(tabName = "parsimony_optim", "OPTIMIZING BY NEW TECHNOLOGIES", icon=icon("tree"))
         ),        
         sidebarMenu(
             menuItem(tabName = "mod_test", "MODEL TEST", icon=icon("vials"))
@@ -83,15 +83,15 @@ ui = dashboardPage(
                     box(width = 12,
                         column(width = 4,
                             selectInput("tree1", "CLUSTERING CRITERIA",
-                            choices=clustering, selected="UPGMA-ape")
+                            choices=clustering, selected=clustering[6])
                         ),
                         column(width = 4,
                             selectInput("distance", "CHOOSE DISTANCE MEASURE",
-                            choices=distancias, selected="euclidean")
+                            choices=distancias, selected=distancias[1])
                         ),
                         column(width = 4,
                             selectInput("tree2", "CLUSTERING CRITERIA",
-                            choices=clustering, selected="NEIGHBOR JOINING")
+                            choices=clustering, selected=clustering[10])
                         )
                     ),
                     box(solidHeader = T, 
@@ -110,24 +110,29 @@ ui = dashboardPage(
             # OPTIMIZE TREE
             tabItem(tabName = "parsimony_optim",
                 fluidRow(
-                   box(solidHeader = T, 
+                    box(solidHeader = T,
+                        selectInput("optim_criteria", "OPTIMIZATION METHOD:",
+                        choices = optimization, selected = optimization[1])
+                    ),
+                    box(solidHeader = T, 
+                        title = "NEAREST NEIGHBOR INTERCHANGE VS PRATCHET",
                         width = 12,
                         collapsible = T,
                         collapsed = F,
                         div(style="height = 600px;",
                             plotOutput("optim_tree")
                         )
-                    ),
-                    box(width = 6,
-                        title = "CHOOSE YOUR TREE",
-                        collapsible = T,
-                        collapsed = F
-                    ),
-                    box(width = 6,
-                        title = "OPTIMIZED TREE",
-                        collapsible = T,
-                        collapsed = F
-                    )
+                    )#,
+#                    box(width = 6,
+#                        title = "CHOOSE YOUR TREE",
+#                        collapsible = T,
+#                        collapsed = F
+#                    ),
+#                    box(width = 6,
+#                        title = "OPTIMIZED TREE",
+#                        collapsible = T,
+#                        collapsed = F
+#                    )
                 )
             ),
             # MODEL TEST

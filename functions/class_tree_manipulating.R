@@ -108,10 +108,10 @@ dataLoader = function(path){
     return(df)
 }
 
-coplottingTrees = function(arb1, arb2){
+coplottingTrees = function(arb1, arb2, paleta=2){
     arb12 = cophylo(arb1,arb2,rotate.multi=T)
     n = length(arb1$tip.label)
-    paleta = 2
+#    paleta = 2
     plot(arb12,
         link.lwd = 4,
         link.lty = "solid",
@@ -120,3 +120,18 @@ coplottingTrees = function(arb1, arb2){
     )
 }
 
+optimizingTree = function(arb, data, metodo){
+    if(metodo=="TREE BISECTION RECONNECTION (TBR)"){
+        arb = fastme.bal(dist.ml(data))
+    }
+    if(metodo=="SUBTREE PRUNING AND REGRAFTING (SPR)"){
+        arb = optim.parsimony(arb, data)
+    }
+    if(metodo=="NEAREST NEIGHBOR INTERCHANGE (NNI)"){
+        arb = optim.parsimony(arb, data, rearrangements = "NNI")
+    }
+    if(metodo=="RATCHET"){
+        arb = pratchet(data, start = arb)
+    }
+    return(arb)
+}

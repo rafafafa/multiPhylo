@@ -94,13 +94,22 @@ server = function(input, output, session){
     ###########################
     # OPTIMIZING BY PARSIMONY #
     ###########################
+    arb_pars = reactive({
+        if(verifyingPhylo(df())){
+            if(parsimony(arb1(),df())<parsimony(arb2(),df())){
+                arb1()#optim.parsimony(arb1(), df())
+            }else{
+                arb2()#optim.parsimony(arb2(), df())
+            }
+        }else{
+            NULL
+        }
+
+    })
+    
     arb_opt = reactive({
         if(verifyingPhylo(df())){
-            if(parsimony(arb1())<parsimony(arb2())){
-                optim.parsimony(arb1(), df())
-            }else{
-                optim.parsimony(arb2(), df())        
-            }
+                optimizingTree(arb_pars(), df(), input$optim_criteria)
         }else{
             NULL
         }
@@ -110,7 +119,7 @@ server = function(input, output, session){
     output$optim_tree = renderPlot({
         if(verifyingPhylo(df())){
             par(mar=c(0,0,0,1))
-            coplottingTrees(arb1(), arb_opt())
+            coplottingTrees(arb_pars(),arb_opt(),paleta=1)
         }else{
             NULL
         }

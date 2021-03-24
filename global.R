@@ -4,13 +4,13 @@ library(shinycssloaders)
 library(magrittr)
 library(RColorBrewer)
 # Phylogenetic analysis libraries
-#library(TreeSearch)
-library(phytools)
-library(phangorn)
+library(TreeSearch)# lets see
+library(phytools)# see phylotools
+library(phangorn)#like ape, powerfoul
 #library(ggtree)# Plotting fancy trees with ggplot
-library(phylotools)
-library(ape)
-library(seqinr)
+library(phylotools)# loading analyzing data
+library(ape)# paup
+library(seqinr)# load sequencies
 library(TreeTools)
 #library(FactoMineR)
 #library(factoextra)
@@ -39,6 +39,10 @@ clustering = c("WARD",#ward.d
                "WPGMC",#median
                "UPGMC",#centroide
                "NEIGHBOR JOINING")#UPGMC
-distancias = toupper(c("euclidean", "maximum",
-               "manhattan", "canberra",
-               "binary", "minkowski"))
+distancias = c("EUCLIDEAN", "MAXIMUM",
+               "MANHATTAN", "CANBERRA",
+               "BINARY", "MINKOWSKI")
+optimization = c("TREE BISECTION RECONNECTION (TBR)",
+                 "SUBTREE PRUNING AND REGRAFTING (SPR)",
+                 "NEAREST NEIGHBOR INTERCHANGE (NNI)",
+                 "RATCHET")
